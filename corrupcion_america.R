@@ -5,6 +5,8 @@ library(dplyr)
 library(xts)
 library(tidyr)
 
+##WEB SCRAPPING, fuente: 'datosmacro.expansion.com'
+
 countries <- c(Argentina= 'https://datosmacro.expansion.com/estado/indice-percepcion-corrupcion/argentina',
                Bolivia= 'https://datosmacro.expansion.com/estado/indice-percepcion-corrupcion/bolivia',
                Brasil= 'https://datosmacro.expansion.com/estado/indice-percepcion-corrupcion/brasil',
@@ -12,7 +14,7 @@ countries <- c(Argentina= 'https://datosmacro.expansion.com/estado/indice-percep
                Colombia= 'https://datosmacro.expansion.com/estado/indice-percepcion-corrupcion/colombia',
                Ecuador= 'https://datosmacro.expansion.com/estado/indice-percepcion-corrupcion/ecuador',
                Guyana= 'https://datosmacro.expansion.com/estado/indice-percepcion-corrupcion/guyana', 
-               Perú= 'https://datosmacro.expansion.com/estado/indice-percepcion-corrupcion/peru',
+               PerÃº= 'https://datosmacro.expansion.com/estado/indice-percepcion-corrupcion/peru',
                Paraguay= 'https://datosmacro.expansion.com/estado/indice-percepcion-corrupcion/paraguay',
                Uruguay= 'https://datosmacro.expansion.com/estado/indice-percepcion-corrupcion/uruguay',
                Venezuela= 'https://datosmacro.expansion.com/estado/indice-percepcion-corrupcion/venezuela',
@@ -65,11 +67,13 @@ sapply(binded_xts,function(x) sum(is.na(x)))
 binded_xts <- na.locf(binded_xts)
 
 binded_xts <- na.locf(binded_xts,fromLast = T)
+       
+#plot time series
 
 colors <- c('blue','green','light blue','yellow','black','gray','red','pink','dark red','dark blue')
 par(xpd=T, mar=par()$mar+c(0,0,0,6))
 
-plot(binded_xts,main =str_wrap('Percepción de corrupción del sector público por parte de sus habitantes, 100 (percepción de altos niveles de corrupción) 
+plot(binded_xts,main =str_wrap('PercepciÃ³n de corrupciÃ³n del sector pÃºblico por parte de sus habitantes, 100 (percepciÃ³n de altos niveles de corrupciÃ³n) 
 a 0',width = 40),
      xlab = 'Fecha',ylab='Indice de Corrupcion',col = colors,bty = 'L',
      lty = c(1,2), xaxt="n")
@@ -89,6 +93,7 @@ ggplot(boxplot_graph,aes(x = Pais, y = Indice))+
   geom_boxplot()+
   scale_y_continuous(breaks = seq(10,max(boxplot_graph$Indice), by = 10))
 
+#plot mean and acumulated results for South America
 
 indice_anual_LATAM_list <- data.frame(Year = '', Acum_Index = '', stringsAsFactors = FALSE)
 
@@ -107,7 +112,7 @@ ggplot(indice_anual_LATAM_list,aes(x = Year, y = Acum_Index, group = 1))+
   geom_line()+
   geom_point(col = 'red')+
   ylab('Indice de corrupcion')+
-  xlab('Año')+  
+  xlab('AÃ±o')+  
   ggtitle('Indice de corrupcion ACUMULADO ANUAL LATAM')+
   theme(plot.title = element_text(hjust = 0.5))
 
@@ -130,7 +135,7 @@ ggplot(indice_prom_LATAM_list,aes(x = Year, y = prom, group = 1))+
   geom_line()+
   geom_point(col = 'red')+
   ylab('Indice corrupcion')+
-  xlab('Año')+
+  xlab('AÃ±o')+
   ggtitle('Promedio de indice de corrupcion LATAM')+
   theme(plot.title = element_text(hjust = 0.5))+
   scale_y_continuous(breaks = seq(min(indice_prom_LATAM_list$prom),max(indice_prom_LATAM_list$prom),by = 1))+
